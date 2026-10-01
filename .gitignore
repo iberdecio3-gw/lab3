@@ -1,0 +1,7 @@
+# R / RStudio / renv
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+renv/library/
+renv/staging/
