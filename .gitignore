@@ -5,3 +5,9 @@
 .Rproj.user/
 renv/library/
 renv/staging/
+
+# macOS
+.DS_Store
+
+# secrets
+.env
