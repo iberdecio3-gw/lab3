@@ -4,6 +4,7 @@ library(readr)
 
 msydta <- read_csv("data/raw/messy_samples.csv")
 
+
 #IDs
 msydta$sample_id <- str_extract(msydta$sample_id, "\\d{4}")
 msydta$sample_id <- paste0("S", msydta$sample_id)
@@ -17,6 +18,7 @@ msydta$sex <- case_when(
   TRUE ~ "Unknown"
 )
 
+
 #site
 msydta$enrollment_site <- str_to_lower(msydta$enrollment_site)
 
@@ -25,7 +27,6 @@ msydta$enrollment_site <- str_replace_all(
   "[-_\\s]",
   ""
 )
-msydta$enrollment_site <- str_to_lower(msydta$enrollment_site)
 
 msydta$enrollment_site <- case_when(
   str_detect(msydta$enrollment_site, "^sitea$") ~ "Site A",
@@ -34,34 +35,51 @@ msydta$enrollment_site <- case_when(
   TRUE ~ NA_character_
 )
 
+
 #date
 msydta$dob <- parse_date_time(
   msydta$dob,
-  orders = c("mdY", "Ymd", "dby", "mdy")
+  orders = c("mdY", "Ymd", "dbY", "mdy")
 )
+
 msydta$dob <- format(msydta$dob, "%Y-%m-%d")
 
-#glu
-#unit standardize to mg/L
-msydta$glucose_unit <- str_to_lower(msydta$glucose_unit)
 
-mmol_rows <- str_detect(msydta$glucose_unit, "mmol/l")
+#glucose
 
-msydta$glucose_value[mmol_rows] <-
-  msydta$glucose_value[mmol_rows] * 18.0182
-
-msydta$glucose_unit <- "mg/dL"
-
-#character --> number 
-msydta$glucose_value <- as.numeric(msydta$glucose_value)
-
-#2 rows w stars
+#removing stars
+msydta$glucose_flag <- str_detect(
+  msydta$glucose_value,
+  "\\*"
+)
 msydta$glucose_value <- str_replace_all(
   msydta$glucose_value,
   "\\*",
   ""
 )
 
+#making numeric
+msydta$glucose_value <- as.numeric(msydta$glucose_value)
 
 
-View(msydta)
+#standardize units
+msydta$glucose_unit <- str_to_lower(msydta$glucose_unit)
+
+mmol_rows <- str_detect(
+  msydta$glucose_unit,
+  "mmol/l"
+)
+# mmol/L -> mg/dL
+msydta$glucose_value[mmol_rows] <-
+  msydta$glucose_value[mmol_rows] * 18.0182
+
+msydta$glucose_value <- round(msydta$glucose_value, 1)
+
+msydta$glucose_unit <- "mg/dL"
+
+print(head(msydta, 10))
+#save
+write_csv(
+  msydta,
+  "data/processed/messy_samples_regex_clean.csv"
+)
