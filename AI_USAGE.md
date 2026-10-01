@@ -1,5 +1,5 @@
 
-#Using ChatGPT, I uploaded both datasets to see what would happen. The transcripts and #observations are below:
+##Using ChatGPT, I uploaded both datasets to see what would happen. The transcripts and ##observations are below:
 
 ```
 Prompt: Here's a messy health data set - can you clean it so the IDs and dates are structured consistently, and the units for the glucose measurements are the same?
