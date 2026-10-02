@@ -61,6 +61,8 @@ This code helps finalize the samples × features × metadata shape. While no piv
 ## AI Use
 The prompts and description of AI use are documented in AI_USAGE.md
 
+Output from AI usage is stored here: data/processed/AI_cleaned_health_data.csv or AI_cleaned_sequences.csv
+
 ## Reproducibility
 All scripts should be run from the repository root using the commands above. Relative file paths are used so the workflow can be reproduced after cloning the repository
 
