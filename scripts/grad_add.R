@@ -13,8 +13,7 @@ feature_table <- clean_samples %>%
     dob,
     sex,
     enrollment_site,
-    glucose_unit,
-    glucose_flag
+    glucose_unit
   )
 
 write_csv(
